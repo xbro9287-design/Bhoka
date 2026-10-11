@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="si" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WwwBroka.lk - Ultimate Broker & Marketplace Platform</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Identity Services SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#0f172a',
+                        cardbg: '#1e293b',
+                        accent: '#f59e0b',
+                        accenthover: '#d97706'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- PWA Manifest Simulation -->
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22WwwBroka.lk%22%2C%22short_name%22%3A%22Broka%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f172a%22%2C%22theme_color%22%3A%22%23f59e0b%22%7D">
+</head>
+<body class="bg-darkbg text-gray-100 font-sans h-full flex flex-col justify-between selection:bg-accent selection:text-gray-900">
+
+    <!-- Top Navigation Panel & Logo -->
+    <header class="bg-cardbg border-b border-gray-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2 cursor-pointer" onclick="switchTab('home')">
+                    <span class="text-2xl font-black tracking-wider text-accent">WwwBroka<span class="text-white">.lk</span></span>
+                </div>
+
+                <!-- Desktop Menu (Conditional Tabs based on Login) -->
+                <nav class="hidden md:flex space-x-2 text-sm font-medium items-center">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn flex items-center space-x-1.5 text-accent transition font-semibold px-3 py-2 rounded-lg bg-gray-900/50">
+                        <span>🏠</span><span>Marketplace</span>
+                    </button>
+                    <button onclick="switchTab('brokers')" id="nav-brokers" class="nav-btn flex items-center space-x-1.5 text-gray-300 hover:text-accent transition px-3 py-2 rounded-lg">
+                        <span>🔍</span><span>Find Brokers</span>
+                    </button>
+                    <button onclick="switchTab('post-ad')" id="nav-post-ad" class="nav-btn flex items-center space-x-1.5 text-gray-300 hover:text-accent transition px-3 py-2 rounded-lg">
+                        <span>➕</span><span>Post Ad</span>
+                    </button>
+
+                    <!-- Logged-in Only Tabs -->
+                    <button onclick="switchTab('contacts')" id="nav-contacts" class="nav-btn logged-in-only hidden flex items-center space-x-1.5 text-gray-300 hover:text-accent transition px-3 py-2 rounded-lg">
+                        <span>💬</span><span>My Contacts / Chat</span>
+                    </button>
+                    <button onclick="switchTab('contracts')" id="nav-contracts" class="nav-btn logged-in-only hidden flex items-center space-x-1.5 text-gray-300 hover:text-accent transition px-3 py-2 rounded-lg">
+                        <span>📜</span><span>Contracts</span>
+                    </button>
+                    <button onclick="switchTab('profile')" id="nav-profile" class="nav-btn logged-in-only hidden flex items-center space-x-1.5 text-gray-300 hover:text-accent transition px-3 py-2 rounded-lg">
+                        <span>👤</span><span>My Page / Broker</span>
+                    </button>
+                </nav>
+
+                <!-- Auth State & Google Login / Logout Button -->
+                <div class="hidden md:flex items-center space-x-3">
+                    <span id="auth-status" class="text-xs text-gray-400 bg-gray-900 px-3 py-1.5 rounded-full border border-gray-700">Guest Mode</span>
+                    <div id="google-signin-container"></div>
+                    <button onclick="logoutUser()" id="logout-btn" class="hidden bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm font-bold transition">Logout</button>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMobileMenu()" class="text-gray-300 hover:text-white focus:outline-none p-2">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-cardbg border-b border-gray-800 px-4 pt-2 pb-4 space-y-1.5">
+            <button onclick="switchTab('home'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-accent font-semibold bg-gray-900"><span>🏠</span><span>Marketplace</span></button>
+            <button onclick="switchTab('brokers'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-800"><span>🔍</span><span>Find Brokers</span></button>
+            <button onclick="switchTab('post-ad'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-800"><span>➕</span><span>Post Ad</span></button>
+            
+            <button onclick="switchTab('contacts'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-800 logged-in-only hidden"><span>💬</span><span>My Contacts / Chat</span></button>
+            <button onclick="switchTab('contracts'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-800 logged-in-only hidden"><span>📜</span><span>Contracts</span></button>
+            <button onclick="switchTab('profile'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-800 logged-in-only hidden"><span>👤</span><span>My Page / Broker</span></button>
+            
+            <div class="pt-3 border-t border-gray-700 flex justify-between items-center px-2">
+                <span id="mobile-auth-status" class="text-xs text-gray-400">Guest Mode</span>
+                <div id="mobile-google-signin-container" class="scale-90"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Body -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- TAB 1: MARKETPLACE -->
+        <section id="tab-home" class="tab-content space-y-6">
+            <div class="bg-cardbg p-6 sm:p-8 rounded-xl border border-gray-800 flex flex-col md:flex-row justify-between items-center gap-6 shadow-sm">
+                <div class="space-y-2">
+                    <span class="text-xs bg-amber-500/10 text-accent font-bold px-3 py-1 rounded-full border border-amber-500/20">🔒 Google Secure Authentication Enabled</span>
+                    <h1 class="text-2xl sm:text-3xl font-black text-white">Find Anything. Deal Direct via WhatsApp.</h1>
+                    <p class="text-gray-400 text-sm">Sign in securely with your Google account to post ads, chat, and register as a broker.</p>
+                </div>
+                <div class="flex w-full md:w-auto gap-2">
+                    <input type="text" placeholder="Search items..." class="bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent w-full md:w-64">
+                    <button class="bg-accent text-gray-900 px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-accenthover transition">Search</button>
+                </div>
+            </div>
+
+            <h2 class="text-xl font-bold text-white pt-2">Active Marketplace Deals</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-cardbg rounded-xl border border-gray-800 overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="h-48 bg-gray-900 flex items-center justify-center text-gray-600 font-semibold text-xs border-b border-gray-800">Item Image</div>
+                        <div class="p-5 space-y-2">
+                            <span class="text-xs bg-amber-500/10 text-accent font-semibold px-2.5 py-1 rounded">Vehicles</span>
+                            <h3 class="font-bold text-lg text-white">Toyota Premio F-Superior 2018</h3>
+                            <p class="text-accent font-extrabold text-lg">LKR 14,500,000</p>
+                            <p class="text-gray-400 text-xs line-clamp-2">Mint condition, 1st owner, home used vehicle located in Colombo.</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <a href="https://wa.me/94700000000?text=I%20am%20interested%20in%20Toyota%20Premio" target="_blank" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 transition">
+                            <span>Chat via WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: FIND BROKERS -->
+        <section id="tab-brokers" class="tab-content hidden space-y-6">
+            <div class="bg-cardbg p-6 rounded-xl border border-gray-800 space-y-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">Verified Brokers Directory</h1>
+                    <p class="text-gray-400 text-sm mt-1">Search brokers by name or specialized type.</p>
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" id="broker-search-input" onkeyup="filterBrokers()" placeholder="Search by broker name or type..." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="brokers-list-container">
+                <div class="broker-card bg-cardbg p-6 rounded-xl border border-gray-800 space-y-4" data-name="samantha kumara" data-type="real estate">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-14 h-14 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center text-lg font-bold text-accent">SK</div>
+                        <div>
+                            <h3 class="font-bold text-white text-base">Samantha Kumara</h3>
+                            <p class="text-xs text-accent">Real Estate Specialist</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-xs leading-relaxed">Over 8 years of experience handling land sales and commercial real estate transactions.</p>
+                    <div class="pt-2">
+                        <a href="https://wa.me/94700000000" target="_blank" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 text-center rounded-xl text-xs block transition">WhatsApp Broker</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: POST AD -->
+        <section id="tab-post-ad" class="tab-content hidden space-y-6 max-w-2xl mx-auto">
+            <div id="post-ad-auth-guard" class="bg-cardbg p-8 rounded-xl border border-gray-800 text-center space-y-4">
+                <h2 class="text-xl font-bold text-white">Google Login Required</h2>
+                <p class="text-gray-400 text-sm">Please sign in with Google to publish items and receive direct WhatsApp orders.</p>
+            </div>
+            
+            <div id="post-ad-form-box" class="hidden bg-cardbg p-6 sm:p-8 rounded-xl border border-gray-800 space-y-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">Post Your Item or Deal</h1>
+                    <p class="text-gray-400 text-sm mt-1">List anything you want to sell instantly.</p>
+                </div>
+                
+                <form onsubmit="handlePostAd(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Item / Deal Title</label>
+                        <input type="text" required placeholder="e.g., Honda Civic FD1 2008" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Category</label>
+                            <select class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                                <option>Vehicles</option>
+                                <option>Real Estate & Lands</option>
+                                <option>Commercial Assets</option>
+                                <option>Contracts & Services</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Price (LKR)</label>
+                            <input type="text" required placeholder="e.g., 4,500,000" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">WhatsApp Number</label>
+                        <input type="text" required placeholder="e.g., +94771234567" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Description</label>
+                        <textarea rows="4" required placeholder="Provide clear details..." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-accent hover:bg-accenthover text-gray-900 font-bold py-3 rounded-xl text-sm transition">Publish Ad Instantly</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- TAB 4: MY CONTACTS / CHAT INBOX -->
+        <section id="tab-contacts" class="tab-content hidden space-y-6 max-w-3xl mx-auto">
+            <h1 class="text-2xl font-bold text-white">My Contacts & Private Chat Inbox</h1>
+            <p class="text-gray-400 text-sm">Manage incoming customer orders and send secure private messages.</p>
+
+            <div class="bg-cardbg rounded-xl border border-gray-800 p-6 space-y-4">
+                <div class="flex items-center space-x-3 pb-4 border-b border-gray-800">
+                    <div class="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center text-accent font-bold">KP</div>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">Kasun Perera (Buyer Inquiry #8821)</h4>
+                        <p class="text-xs text-green-400">Secure Private Chat</p>
+                    </div>
+                </div>
+                <!-- Messages Area -->
+                <div class="space-y-3 h-48 overflow-y-auto pr-2" id="chat-messages-box">
+                    <div class="bg-gray-900 p-3 rounded-xl text-xs max-w-xs text-gray-300">
+                        Hello! Is the price negotiable?
+                    </div>
+                </div>
+                <!-- Message Input Form -->
+                <form onsubmit="sendChatMessage(event)" class="flex gap-2 pt-2">
+                    <input type="text" id="chat-input-msg" placeholder="Type a private message..." class="flex-grow bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-accent">
+                    <button type="submit" class="bg-accent hover:bg-accenthover text-gray-900 font-bold px-4 py-2.5 rounded-xl text-xs">Send</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- TAB 5: CONTRACTS HUB -->
+        <section id="tab-contracts" class="tab-content hidden space-y-6">
+            <h1 class="text-2xl font-bold text-white">Contracts Hub</h1>
+            <p class="text-gray-400 text-sm">Track agreements and ongoing deal statuses safely stored.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-cardbg p-6 rounded-xl border border-gray-800 space-y-3">
+                    <span class="text-xs bg-green-500/10 text-green-400 font-semibold px-2.5 py-1 rounded">Active Deal</span>
+                    <h3 class="font-bold text-lg text-white">Land Sale Agreement - Kandy Property</h3>
+                    <p class="text-gray-400 text-xs">Between Buyer & Seller. Broker commission agreed: 2%.</p>
+                    <div class="pt-2 text-xs text-accent font-semibold">Status: Signed & Verified</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: MY PAGE & BROKER REGISTRATION -->
+        <section id="tab-profile" class="tab-content hidden space-y-6 max-w-2xl mx-auto">
+            <div class="bg-cardbg p-6 sm:p-8 rounded-xl border border-gray-800 space-y-6">
+                <div class="flex items-center space-x-4 pb-6 border-b border-gray-800">
+                    <img id="profile-google-img" src="" alt="Profile" class="w-16 h-16 rounded-full border border-gray-700 object-cover hidden">
+                    <div id="profile-initials-box" class="w-16 h-16 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center text-xl font-bold text-accent">SN</div>
+                    <div>
+                        <h2 class="text-xl font-bold text-white" id="profile-display-name">User Name</h2>
+                        <p class="text-xs text-gray-400" id="profile-role-status">Status: Active Member</p>
+                    </div>
+                </div>
+
+                <!-- Broker Application Form -->
+                <div id="broker-form-wrapper" class="space-y-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-accent">Become a Verified Broker</h3>
+                        <p class="text-gray-400 text-xs mt-1">Submit your details to create your official Broker My Page.</p>
+                    </div>
+                    
+                    <form onsubmit="handleBrokerApplication(event)" class="space-y-4 pt-2">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Full Name</label>
+                            <input type="text" id="b-name" required placeholder="Enter full name" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">NIC Number</label>
+                                <input type="text" id="b-nic" required placeholder="e.g., 200012345678" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">Broker Specialty</label>
+                                <input type="text" id="b-specialty" required placeholder="e.g., Real Estate, Vehicles" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Permanent Address</label>
+                            <input type="text" id="b-address" required placeholder="Enter address" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Detailed Background / Experience</label>
+                            <textarea id="b-desc" rows="4" required placeholder="Describe experience..." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-accent hover:bg-accenthover text-gray-900 font-bold py-3 rounded-xl text-sm transition">Submit Broker Application</button>
+                    </form>
+                </div>
+
+                <!-- Broker Dashboard My Page -->
+                <div id="broker-dashboard-wrapper" class="hidden space-y-4 pt-4 border-t border-gray-800">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-accent">🌟 My Broker Page & Dashboard</h3>
+                        <span class="bg-green-500/10 text-green-400 text-xs px-2.5 py-1 rounded font-bold">Verified Broker</span>
+                    </div>
+                    <div class="bg-gray-900 p-4 rounded-xl border border-gray-700 space-y-2">
+                        <p class="text-xs text-gray-400"><b>Specialty:</b> <span id="dash-specialty">-</span></p>
+                        <p class="text-xs text-gray-400"><b>Address:</b> <span id="dash-address">-</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-cardbg border-t border-gray-800 py-6 text-center text-xs text-gray-500">
+        <p>&copy; 2026 WwwBroka.lk. All rights reserved. Google Secure PWA Broker Hub.</p>
+    </footer>
+
+    <!-- Google Login & App Script Logic -->
+    <script>
+        let isLoggedIn = localStorage.getItem('broka_logged') === 'true';
+        let isBroker = localStorage.getItem('broka_is_broker') === 'true';
+        let currentUser = JSON.parse(localStorage.getItem('broka_user') || '{}');
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initGoogleAuth();
+            updateUIState();
+        });
+
+        function initGoogleAuth() {
+            // Initialize Google Identity Services
+            if (typeof google !== 'undefined') {
+                google.accounts.id.initialize({
+                    client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com", // මෙතැනට ඔයාගේ Google Client ID එක දාන්න
+                    callback: handleGoogleResponse
+                });
+
+                // Render button in desktop header
+                google.accounts.id.renderButton(
+                    document.getElementById("google-signin-container"),
+                    { theme: "outline", size: "medium", shape: "pill" }
+                );
+
+                // Render button in mobile menu
+                google.accounts.id.renderButton(
+                    document.getElementById("mobile-google-signin-container"),
+                    { theme: "outline", size: "small", shape: "pill" }
+                );
+            }
+        }
+
+        // Decode JWT token from Google to get user details
+        function handleGoogleResponse(response) {
+            const token = response.credential;
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            
+            currentUser = JSON.parse(jsonPayload);
+            isLoggedIn = true;
+            localStorage.setItem('broka_logged', 'true');
+            localStorage.setItem('broka_user', JSON.stringify(currentUser));
+
+            updateUIState();
+            alert("Successfully Signed in via Google as " + currentUser.name + "!");
+        }
+
+        function logoutUser() {
+            isLoggedIn = false;
+            isBroker = false;
+            localStorage.removeItem('broka_logged');
+            localStorage.removeItem('broka_user');
+            localStorage.removeItem('broka_is_broker');
+            updateUIState();
+            switchTab('home');
+            alert("Logged out successfully.");
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                el.classList.remove('text-accent', 'font-semibold', 'bg-gray-900/50');
+                el.classList.add('text-gray-300');
+            });
+
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            const btn = document.getElementById('nav-' + tabId);
+            if(btn) {
+                btn.classList.remove('text-gray-300');
+                btn.classList.add('text-accent', 'font-semibold', 'bg-gray-900/50');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function updateUIState() {
+            const statusEl = document.getElementById('auth-status');
+            const mobileStatusEl = document.getElementById('mobile-auth-status');
+            const googleSignInBox = document.getElementById('google-signin-container');
+            const mobileGoogleBox = document.getElementById('mobile-google-signin-container');
+            const logoutBtn = document.getElementById('logout-btn');
+            const loggedInElements = document.querySelectorAll('.logged-in-only');
+
+            const postGuard = document.getElementById('post-ad-auth-guard');
+            const postForm = document.getElementById('post-ad-form-box');
+
+            if(isLoggedIn) {
+                statusEl.innerText = "Google Verified";
+                mobileStatusEl.innerText = "Google Verified";
+                if(googleSignInBox) googleSignInBox.classList.add('hidden');
+                if(mobileGoogleBox) mobileGoogleBox.classList.add('hidden');
+                if(logoutBtn) logoutBtn.classList.remove('hidden');
+
+                loggedInElements.forEach(el => el.classList.remove('hidden'));
+                if(postGuard) postGuard.classList.add('hidden');
+                if(postForm) postForm.classList.remove('hidden');
+
+                // Set profile details from Google account
+                if(currentUser.name) {
+                    document.getElementById('profile-display-name').innerText = currentUser.name;
+                    if(currentUser.picture) {
+                        const img = document.getElementById('profile-google-img');
+                        img.src = currentUser.picture;
+                        img.classList.remove('hidden');
+                        document.getElementById('profile-initials-box').classList.add('hidden');
+                    }
+                }
+
+                if(isBroker) {
+                    document.getElementById('broker-form-wrapper').classList.add('hidden');
+                    document.getElementById('broker-dashboard-wrapper').classList.remove('hidden');
+                    document.getElementById('profile-role-status').innerText = "Status: Verified Broker";
+                }
+            } else {
+                statusEl.innerText = "Guest Mode";
+                mobileStatusEl.innerText = "Guest Mode";
+                if(googleSignInBox) googleSignInBox.classList.remove('hidden');
+                if(mobileGoogleBox) mobileGoogleBox.classList.remove('hidden');
+                if(logoutBtn) logoutBtn.classList.add('hidden');
+
+                loggedInElements.forEach(el => el.classList.add('hidden'));
+                if(postGuard) postGuard.classList.remove('hidden');
+                if(postForm) postForm.classList.add('hidden');
+            }
+        }
+
+        function filterBrokers() {
+            const query = document.getElementById('broker-search-input').value.toLowerCase();
+            const cards = document.querySelectorAll('.broker-card');
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name');
+                const type = card.getAttribute('data-type');
+                if(name.includes(query) || type.includes(query)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        function handlePostAd(event) {
+            event.preventDefault();
+            alert("Your item has been successfully published to WwwBroka.lk Marketplace!");
+            event.target.reset();
+            switchTab('home');
+        }
+
+        function handleBrokerApplication(event) {
+            event.preventDefault();
+            isBroker = true;
+            localStorage.setItem('broka_is_broker', 'true');
+            
+            const name = document.getElementById('b-name').value;
+            const specialty = document.getElementById('b-specialty').value;
+            const address = document.getElementById('b-address').value;
+
+            document.getElementById('dash-specialty').innerText = specialty;
+            document.getElementById('dash-address').innerText = address;
+
+            const container = document.getElementById('brokers-list-container');
+            const newBrokerCard = document.createElement('div');
+            newBrokerCard.className = "broker-card bg-cardbg p-6 rounded-xl border border-gray-800 space-y-4";
+            newBrokerCard.setAttribute('data-name', name.toLowerCase());
+            newBrokerCard.setAttribute('data-type', specialty.toLowerCase());
+            newBrokerCard.innerHTML = `
+                <div class="flex items-center space-x-4">
+                    <img src="${currentUser.picture || ''}" class="w-14 h-14 rounded-full object-cover border border-gray-700">
+                    <div>
+                        <h3 class="font-bold text-white text-base">${name}</h3>
+                        <p class="text-xs text-accent">${specialty}</p>
+                    </div>
+                </div>
+                <p class="text-gray-300 text-xs leading-relaxed">Verified broker specializing in ${specialty}. Contact directly for reliable deals.</p>
+                <div class="pt-2">
+                    <a href="https://wa.me/94700000000" target="_blank" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 text-center rounded-xl text-xs block transition">WhatsApp Broker</a>
+                </div>
+            `;
+            container.prepend(newBrokerCard);
+
+            alert("Broker Application Approved! Your profile is live on the public directory.");
+            updateUIState();
+        }
+
+        function sendChatMessage(event) {
+            event.preventDefault();
+            const input = document.getElementById('chat-input-msg');
+            if(!input.value.trim()) return;
+
+            const box = document.getElementById('chat-messages-box');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = "bg-accent/10 border border-accent/20 p-3 rounded-xl text-xs max-w-xs text-accent ml-auto";
+            msgDiv.innerText = input.value;
+            box.appendChild(msgDiv);
+            input.value = "";
+            box.scrollTop = box.scrollHeight;
+        }
+    </script>
+</body>
+</html>
+
