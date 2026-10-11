@@ -22,7 +22,7 @@
             }
         }
     </script>
-    <!-- PWA Manifest Simulation -->
+    <!-- PWA Web App Manifest Simulation -->
     <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22WwwBroka.lk%22%2C%22short_name%22%3A%22Broka%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f172a%22%2C%22theme_color%22%3A%22%23f59e0b%22%7D">
 </head>
 <body class="bg-darkbg text-gray-100 font-sans h-full flex flex-col justify-between selection:bg-accent selection:text-gray-900">
@@ -102,9 +102,9 @@
         <section id="tab-home" class="tab-content space-y-6">
             <div class="bg-cardbg p-6 sm:p-8 rounded-xl border border-gray-800 flex flex-col md:flex-row justify-between items-center gap-6 shadow-sm">
                 <div class="space-y-2">
-                    <span class="text-xs bg-amber-500/10 text-accent font-bold px-3 py-1 rounded-full border border-amber-500/20">🔒 Google Secure Authentication Enabled</span>
+                    <span class="text-xs bg-amber-500/10 text-accent font-bold px-3 py-1 rounded-full border border-amber-500/20">📱 GitHub Pages PWA & Google Auth Ready</span>
                     <h1 class="text-2xl sm:text-3xl font-black text-white">Find Anything. Deal Direct via WhatsApp.</h1>
-                    <p class="text-gray-400 text-sm">Sign in securely with your Google account to post ads, chat, and register as a broker.</p>
+                    <p class="text-gray-400 text-sm">Sign in securely with Google. Open Chrome Menu (⋮) and select <b class="text-accent">"Add to Home Screen"</b> to install!</p>
                 </div>
                 <div class="flex w-full md:w-auto gap-2">
                     <input type="text" placeholder="Search items..." class="bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent w-full md:w-64">
@@ -329,20 +329,17 @@
         });
 
         function initGoogleAuth() {
-            // Initialize Google Identity Services
             if (typeof google !== 'undefined') {
                 google.accounts.id.initialize({
-                    client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com", // මෙතැනට ඔයාගේ Google Client ID එක දාන්න
+                    client_id: "857981291104-3rn6thoqmt7d1lc30th0157mspf68tfv.apps.googleusercontent.com",
                     callback: handleGoogleResponse
                 });
 
-                // Render button in desktop header
                 google.accounts.id.renderButton(
                     document.getElementById("google-signin-container"),
                     { theme: "outline", size: "medium", shape: "pill" }
                 );
 
-                // Render button in mobile menu
                 google.accounts.id.renderButton(
                     document.getElementById("mobile-google-signin-container"),
                     { theme: "outline", size: "small", shape: "pill" }
@@ -350,7 +347,6 @@
             }
         }
 
-        // Decode JWT token from Google to get user details
         function handleGoogleResponse(response) {
             const token = response.credential;
             const base64Url = token.split('.')[1];
@@ -421,7 +417,6 @@
                 if(postGuard) postGuard.classList.add('hidden');
                 if(postForm) postForm.classList.remove('hidden');
 
-                // Set profile details from Google account
                 if(currentUser.name) {
                     document.getElementById('profile-display-name').innerText = currentUser.name;
                     if(currentUser.picture) {
@@ -523,4 +518,3 @@
     </script>
 </body>
 </html>
-
