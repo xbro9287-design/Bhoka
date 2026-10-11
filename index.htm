@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WwwBroka.lk - Ultimate Broker & Marketplace Platform</title>
+    <title>Broka.lk - Ultimate Broker & Marketplace Platform</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Identity Services SDK -->
@@ -22,8 +22,8 @@
             }
         }
     </script>
-    <!-- PWA Web App Manifest Simulation -->
-    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22WwwBroka.lk%22%2C%22short_name%22%3A%22Broka%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f172a%22%2C%22theme_color%22%3A%22%23f59e0b%22%7D">
+    <!-- PWA Web App Manifest -->
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Broka.lk%22%2C%22short_name%22%3A%22Broka%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230f172a%22%2C%22theme_color%22%3A%22%23f59e0b%22%7D">
 </head>
 <body class="bg-darkbg text-gray-100 font-sans h-full flex flex-col justify-between selection:bg-accent selection:text-gray-900">
 
@@ -31,12 +31,12 @@
     <header class="bg-cardbg border-b border-gray-800 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <!-- Logo -->
+                <!-- Logo (www removed, only Broka.lk) -->
                 <div class="flex items-center space-x-2 cursor-pointer" onclick="switchTab('home')">
-                    <span class="text-2xl font-black tracking-wider text-accent">WwwBroka<span class="text-white">.lk</span></span>
+                    <span class="text-2xl font-black tracking-wider text-accent">Broka<span class="text-white">.lk</span></span>
                 </div>
 
-                <!-- Desktop Menu (Conditional Tabs based on Login) -->
+                <!-- Desktop Menu -->
                 <nav class="hidden md:flex space-x-2 text-sm font-medium items-center">
                     <button onclick="switchTab('home')" id="nav-home" class="nav-btn flex items-center space-x-1.5 text-accent transition font-semibold px-3 py-2 rounded-lg bg-gray-900/50">
                         <span>🏠</span><span>Marketplace</span>
@@ -50,17 +50,17 @@
 
                     <!-- Logged-in Only Tabs -->
                     <button onclick="switchTab('contacts')" id="nav-contacts" class="nav-btn logged-in-only hidden flex items-center space-x-1.5 text-gray-300 hover:text-accent transition px-3 py-2 rounded-lg">
-                        <span>💬</span><span>My Contacts / Chat</span>
+                        <span>💬</span><span>My Chat Inbox</span>
                     </button>
                     <button onclick="switchTab('contracts')" id="nav-contracts" class="nav-btn logged-in-only hidden flex items-center space-x-1.5 text-gray-300 hover:text-accent transition px-3 py-2 rounded-lg">
                         <span>📜</span><span>Contracts</span>
                     </button>
                     <button onclick="switchTab('profile')" id="nav-profile" class="nav-btn logged-in-only hidden flex items-center space-x-1.5 text-gray-300 hover:text-accent transition px-3 py-2 rounded-lg">
-                        <span>👤</span><span>My Page / Broker</span>
+                        <span>👤</span><span>My Page / Profile</span>
                     </button>
                 </nav>
 
-                <!-- Auth State & Google Login / Logout Button -->
+                <!-- Auth State & Google Login -->
                 <div class="hidden md:flex items-center space-x-3">
                     <span id="auth-status" class="text-xs text-gray-400 bg-gray-900 px-3 py-1.5 rounded-full border border-gray-700">Guest Mode</span>
                     <div id="google-signin-container"></div>
@@ -84,9 +84,9 @@
             <button onclick="switchTab('brokers'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-800"><span>🔍</span><span>Find Brokers</span></button>
             <button onclick="switchTab('post-ad'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-800"><span>➕</span><span>Post Ad</span></button>
             
-            <button onclick="switchTab('contacts'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-800 logged-in-only hidden"><span>💬</span><span>My Contacts / Chat</span></button>
+            <button onclick="switchTab('contacts'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-800 logged-in-only hidden"><span>💬</span><span>My Chat Inbox</span></button>
             <button onclick="switchTab('contracts'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-800 logged-in-only hidden"><span>📜</span><span>Contracts</span></button>
-            <button onclick="switchTab('profile'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-800 logged-in-only hidden"><span>👤</span><span>My Page / Broker</span></button>
+            <button onclick="switchTab('profile'); toggleMobileMenu();" class="flex items-center space-x-2 w-full text-left py-2 px-3 rounded-lg text-gray-200 hover:bg-gray-800 logged-in-only hidden"><span>👤</span><span>My Page / Profile</span></button>
             
             <div class="pt-3 border-t border-gray-700 flex justify-between items-center px-2">
                 <span id="mobile-auth-status" class="text-xs text-gray-400">Guest Mode</span>
@@ -102,9 +102,9 @@
         <section id="tab-home" class="tab-content space-y-6">
             <div class="bg-cardbg p-6 sm:p-8 rounded-xl border border-gray-800 flex flex-col md:flex-row justify-between items-center gap-6 shadow-sm">
                 <div class="space-y-2">
-                    <span class="text-xs bg-amber-500/10 text-accent font-bold px-3 py-1 rounded-full border border-amber-500/20">📱 GitHub Pages PWA & Google Auth Ready</span>
+                    <span class="text-xs bg-amber-500/10 text-accent font-bold px-3 py-1 rounded-full border border-amber-500/20">📱 Broka.lk PWA & Google Auth Ready</span>
                     <h1 class="text-2xl sm:text-3xl font-black text-white">Find Anything. Deal Direct via WhatsApp.</h1>
-                    <p class="text-gray-400 text-sm">Sign in securely with Google. Open Chrome Menu (⋮) and select <b class="text-accent">"Add to Home Screen"</b> to install!</p>
+                    <p class="text-gray-400 text-sm">Sign in securely with Google. Install app on your home screen for instant access.</p>
                 </div>
                 <div class="flex w-full md:w-auto gap-2">
                     <input type="text" placeholder="Search items..." class="bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent w-full md:w-64">
@@ -150,13 +150,13 @@
                     <div class="flex items-center space-x-4">
                         <div class="w-14 h-14 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center text-lg font-bold text-accent">SK</div>
                         <div>
-                            <h3 class="font-bold text-white text-base">Samantha Kumara</h3>
+                            <h3 class="font-bold text-base text-white">Samantha Kumara</h3>
                             <p class="text-xs text-accent">Real Estate Specialist</p>
                         </div>
                     </div>
                     <p class="text-gray-300 text-xs leading-relaxed">Over 8 years of experience handling land sales and commercial real estate transactions.</p>
-                    <div class="pt-2">
-                        <a href="https://wa.me/94700000000" target="_blank" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 text-center rounded-xl text-xs block transition">WhatsApp Broker</a>
+                    <div class="pt-2 flex gap-2">
+                        <button onclick="openBrokerModal('Samantha Kumara', 'Real Estate Specialist', 'Over 8 years experience in land sales.', 'SK')" class="flex-grow bg-accent hover:bg-accenthover text-gray-900 font-bold py-2.5 rounded-xl text-xs transition">View Page</button>
                     </div>
                 </div>
             </div>
@@ -208,10 +208,10 @@
             </div>
         </section>
 
-        <!-- TAB 4: MY CONTACTS / CHAT INBOX -->
+        <!-- TAB 4: MY CONTACTS / CHAT INBOX (Persistent Storage) -->
         <section id="tab-contacts" class="tab-content hidden space-y-6 max-w-3xl mx-auto">
-            <h1 class="text-2xl font-bold text-white">My Contacts & Private Chat Inbox</h1>
-            <p class="text-gray-400 text-sm">Manage incoming customer orders and send secure private messages.</p>
+            <h1 class="text-2xl font-bold text-white">My Chat Inbox & Messages</h1>
+            <p class="text-gray-400 text-sm">Secure persistent customer messages and inquiries.</p>
 
             <div class="bg-cardbg rounded-xl border border-gray-800 p-6 space-y-4">
                 <div class="flex items-center space-x-3 pb-4 border-b border-gray-800">
@@ -223,9 +223,7 @@
                 </div>
                 <!-- Messages Area -->
                 <div class="space-y-3 h-48 overflow-y-auto pr-2" id="chat-messages-box">
-                    <div class="bg-gray-900 p-3 rounded-xl text-xs max-w-xs text-gray-300">
-                        Hello! Is the price negotiable?
-                    </div>
+                    <!-- Dynamically loaded from localStorage -->
                 </div>
                 <!-- Message Input Form -->
                 <form onsubmit="sendChatMessage(event)" class="flex gap-2 pt-2">
@@ -250,20 +248,38 @@
             </div>
         </section>
 
-        <!-- TAB 6: MY PAGE & BROKER REGISTRATION -->
+        <!-- TAB 6: MY PAGE & PROFILE EDITOR -->
         <section id="tab-profile" class="tab-content hidden space-y-6 max-w-2xl mx-auto">
             <div class="bg-cardbg p-6 sm:p-8 rounded-xl border border-gray-800 space-y-6">
-                <div class="flex items-center space-x-4 pb-6 border-b border-gray-800">
-                    <img id="profile-google-img" src="" alt="Profile" class="w-16 h-16 rounded-full border border-gray-700 object-cover hidden">
-                    <div id="profile-initials-box" class="w-16 h-16 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center text-xl font-bold text-accent">SN</div>
-                    <div>
-                        <h2 class="text-xl font-bold text-white" id="profile-display-name">User Name</h2>
-                        <p class="text-xs text-gray-400" id="profile-role-status">Status: Active Member</p>
+                <div class="flex items-center justify-between pb-6 border-b border-gray-800">
+                    <div class="flex items-center space-x-4">
+                        <img id="profile-google-img" src="" alt="Profile" class="w-16 h-16 rounded-full border border-gray-700 object-cover hidden">
+                        <div id="profile-initials-box" class="w-16 h-16 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center text-xl font-bold text-accent">SN</div>
+                        <div>
+                            <h2 class="text-xl font-bold text-white" id="profile-display-name">User Name</h2>
+                            <p class="text-xs text-gray-400" id="profile-role-status">Status: Active Member</p>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Profile Editor Form -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold text-accent">Profile Editor</h3>
+                    <form onsubmit="handleProfileUpdate(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Display Name</label>
+                            <input type="text" id="edit-name" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Profile Photo URL (PNG/JPG link)</label>
+                            <input type="text" id="edit-photo" placeholder="https://example.com/photo.jpg" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent">
+                        </div>
+                        <button type="submit" class="w-full bg-gray-800 hover:bg-gray-700 text-accent font-bold py-2.5 rounded-xl text-xs transition border border-gray-700">Update Profile</button>
+                    </form>
+                </div>
+
                 <!-- Broker Application Form -->
-                <div id="broker-form-wrapper" class="space-y-4">
+                <div id="broker-form-wrapper" class="space-y-4 pt-4 border-t border-gray-800">
                     <div>
                         <h3 class="text-lg font-bold text-accent">Become a Verified Broker</h3>
                         <p class="text-gray-400 text-xs mt-1">Submit your details to create your official Broker My Page.</p>
@@ -296,7 +312,7 @@
                     </form>
                 </div>
 
-                <!-- Broker Dashboard My Page -->
+                <!-- Broker Dashboard My Page with Permanent Delete Button -->
                 <div id="broker-dashboard-wrapper" class="hidden space-y-4 pt-4 border-t border-gray-800">
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-bold text-accent">🌟 My Broker Page & Dashboard</h3>
@@ -305,6 +321,11 @@
                     <div class="bg-gray-900 p-4 rounded-xl border border-gray-700 space-y-2">
                         <p class="text-xs text-gray-400"><b>Specialty:</b> <span id="dash-specialty">-</span></p>
                         <p class="text-xs text-gray-400"><b>Address:</b> <span id="dash-address">-</span></p>
+                        <p class="text-xs text-gray-400"><b>Subscribers:</b> <span id="dash-sub-count">0</span></p>
+                        <div class="pt-3 flex justify-between items-center">
+                            <button onclick="alert('Subscription Link Copied!')" class="bg-accent text-gray-900 text-xs font-bold px-3 py-1.5 rounded-lg">Copy Subscribe Link</button>
+                            <button onclick="deleteBrokerAccount()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition">Delete Broker Status</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -312,20 +333,44 @@
 
     </main>
 
+    <!-- Broker Public View Modal -->
+    <div id="broker-modal" class="hidden fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
+        <div class="bg-cardbg border border-gray-800 w-full max-w-lg p-6 rounded-2xl space-y-4 relative">
+            <button onclick="closeBrokerModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg font-bold">✕</button>
+            <div class="flex items-center space-x-4">
+                <div class="w-14 h-14 bg-gray-900 border border-gray-700 rounded-full flex items-center justify-center text-lg font-bold text-accent" id="modal-initials">BK</div>
+                <div>
+                    <h3 class="text-xl font-bold text-white" id="modal-name">Broker Name</h3>
+                    <p class="text-xs text-accent" id="modal-specialty">Specialty</p>
+                </div>
+            </div>
+            <p class="text-gray-300 text-xs leading-relaxed" id="modal-desc">Description about broker experience.</p>
+            <div class="flex gap-3 pt-2">
+                <button onclick="toggleSubscribe()" id="subscribe-btn" class="flex-grow bg-accent hover:bg-accenthover text-gray-900 font-bold py-2.5 rounded-xl text-xs transition">Subscribe</button>
+                <button onclick="openChatFromModal()" class="flex-grow bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl text-xs transition">Private Chat</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-cardbg border-t border-gray-800 py-6 text-center text-xs text-gray-500">
-        <p>&copy; 2026 WwwBroka.lk. All rights reserved. Google Secure PWA Broker Hub.</p>
+        <p>&copy; 2026 Broka.lk. All rights reserved. Google Secure PWA Broker Hub.</p>
     </footer>
 
-    <!-- Google Login & App Script Logic -->
+    <!-- App Script Logic -->
     <script>
         let isLoggedIn = localStorage.getItem('broka_logged') === 'true';
         let isBroker = localStorage.getItem('broka_is_broker') === 'true';
         let currentUser = JSON.parse(localStorage.getItem('broka_user') || '{}');
+        let chatMessages = JSON.parse(localStorage.getItem('broka_chats') || '[]');
+        let isSubscribed = localStorage.getItem('broka_subscribed') === 'true';
+        let subscriberCount = parseInt(localStorage.getItem('broka_sub_count') || '0');
 
         window.addEventListener('DOMContentLoaded', () => {
             initGoogleAuth();
             updateUIState();
+            renderChatMessages();
+            loadBrokerDataToDashboard();
         });
 
         function initGoogleAuth() {
@@ -366,10 +411,8 @@
 
         function logoutUser() {
             isLoggedIn = false;
-            isBroker = false;
             localStorage.removeItem('broka_logged');
             localStorage.removeItem('broka_user');
-            localStorage.removeItem('broka_is_broker');
             updateUIState();
             switchTab('home');
             alert("Logged out successfully.");
@@ -419,7 +462,9 @@
 
                 if(currentUser.name) {
                     document.getElementById('profile-display-name').innerText = currentUser.name;
+                    document.getElementById('edit-name').value = currentUser.name;
                     if(currentUser.picture) {
+                        document.getElementById('edit-photo').value = currentUser.picture;
                         const img = document.getElementById('profile-google-img');
                         img.src = currentUser.picture;
                         img.classList.remove('hidden');
@@ -431,6 +476,9 @@
                     document.getElementById('broker-form-wrapper').classList.add('hidden');
                     document.getElementById('broker-dashboard-wrapper').classList.remove('hidden');
                     document.getElementById('profile-role-status').innerText = "Status: Verified Broker";
+                } else {
+                    document.getElementById('broker-form-wrapper').classList.remove('hidden');
+                    document.getElementById('broker-dashboard-wrapper').classList.add('hidden');
                 }
             } else {
                 statusEl.innerText = "Guest Mode";
@@ -443,6 +491,15 @@
                 if(postGuard) postGuard.classList.remove('hidden');
                 if(postForm) postForm.classList.add('hidden');
             }
+        }
+
+        function handleProfileUpdate(event) {
+            event.preventDefault();
+            currentUser.name = document.getElementById('edit-name').value;
+            currentUser.picture = document.getElementById('edit-photo').value;
+            localStorage.setItem('broka_user', JSON.stringify(currentUser));
+            updateUIState();
+            alert("Profile successfully updated!");
         }
 
         function filterBrokers() {
@@ -459,11 +516,60 @@
             });
         }
 
-        function handlePostAd(event) {
-            event.preventDefault();
-            alert("Your item has been successfully published to WwwBroka.lk Marketplace!");
-            event.target.reset();
-            switchTab('home');
+        function openBrokerModal(name, specialty, desc, initials) {
+            document.getElementById('modal-name').innerText = name;
+            document.getElementById('modal-specialty').innerText = specialty;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('modal-initials').innerText = initials;
+            
+            const subBtn = document.getElementById('subscribe-btn');
+            if(isSubscribed) {
+                subBtn.innerText = "Subscribed ✓";
+                subBtn.className = "flex-grow bg-green-600 text-white font-bold py-2.5 rounded-xl text-xs transition";
+            } else {
+                subBtn.innerText = "Subscribe";
+                subBtn.className = "flex-grow bg-accent hover:bg-accenthover text-gray-900 font-bold py-2.5 rounded-xl text-xs transition";
+            }
+            document.getElementById('broker-modal').classList.remove('hidden');
+        }
+
+        function closeBrokerModal() {
+            document.getElementById('broker-modal').classList.add('hidden');
+        }
+
+        function toggleSubscribe() {
+            if(!isLoggedIn) {
+                alert("Please log in with Google to subscribe!");
+                return;
+            }
+            isSubscribed = !isSubscribed;
+            if(isSubscribed) {
+                subscriberCount++;
+            } else {
+                subscriberCount = Math.max(0, subscriberCount - 1);
+            }
+            localStorage.setItem('broka_subscribed', isSubscribed);
+            localStorage.setItem('broka_sub_count', subscriberCount);
+            document.getElementById('dash-sub-count').innerText = subscriberCount;
+            
+            const subBtn = document.getElementById('subscribe-btn');
+            if(isSubscribed) {
+                subBtn.innerText = "Subscribed ✓";
+                subBtn.className = "flex-grow bg-green-600 text-white font-bold py-2.5 rounded-xl text-xs transition";
+                alert("Successfully subscribed to this broker!");
+            } else {
+                subBtn.innerText = "Subscribe";
+                subBtn.className = "flex-grow bg-accent hover:bg-accenthover text-gray-900 font-bold py-2.5 rounded-xl text-xs transition";
+            }
+        }
+
+        function openChatFromModal() {
+            if(!isLoggedIn) {
+                alert("Please log in to start a private chat.");
+                return;
+            }
+            closeBrokerModal();
+            switchTab('contacts');
         }
 
         function handleBrokerApplication(event) {
@@ -474,9 +580,14 @@
             const name = document.getElementById('b-name').value;
             const specialty = document.getElementById('b-specialty').value;
             const address = document.getElementById('b-address').value;
+            const desc = document.getElementById('b-desc').value;
 
-            document.getElementById('dash-specialty').innerText = specialty;
-            document.getElementById('dash-address').innerText = address;
+            localStorage.setItem('broka_spec', specialty);
+            localStorage.setItem('broka_addr', address);
+            localStorage.setItem('broka_bname', name);
+            localStorage.setItem('broka_bdesc', desc);
+
+            loadBrokerDataToDashboard();
 
             const container = document.getElementById('brokers-list-container');
             const newBrokerCard = document.createElement('div');
@@ -487,19 +598,57 @@
                 <div class="flex items-center space-x-4">
                     <img src="${currentUser.picture || ''}" class="w-14 h-14 rounded-full object-cover border border-gray-700">
                     <div>
-                        <h3 class="font-bold text-white text-base">${name}</h3>
+                        <h3 class="font-bold text-base text-white">${name}</h3>
                         <p class="text-xs text-accent">${specialty}</p>
                     </div>
                 </div>
-                <p class="text-gray-300 text-xs leading-relaxed">Verified broker specializing in ${specialty}. Contact directly for reliable deals.</p>
+                <p class="text-gray-300 text-xs leading-relaxed">${desc}</p>
                 <div class="pt-2">
-                    <a href="https://wa.me/94700000000" target="_blank" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 text-center rounded-xl text-xs block transition">WhatsApp Broker</a>
+                    <button onclick="openBrokerModal('${name}', '${specialty}', '${desc}', '${name.substring(0,2).toUpperCase()}')" class="w-full bg-accent hover:bg-accenthover text-gray-900 font-bold py-2.5 rounded-xl text-xs transition">View Page</button>
                 </div>
             `;
             container.prepend(newBrokerCard);
 
-            alert("Broker Application Approved! Your profile is live on the public directory.");
+            alert("Broker Application Approved! Your profile is live on the directory.");
             updateUIState();
+        }
+
+        function loadBrokerDataToDashboard() {
+            if(isBroker) {
+                document.getElementById('dash-specialty').innerText = localStorage.getItem('broka_spec') || '-';
+                document.getElementById('dash-address').innerText = localStorage.getItem('broka_addr') || '-';
+                document.getElementById('dash-sub-count').innerText = localStorage.getItem('broka_sub_count') || '0';
+            }
+        }
+
+        function deleteBrokerAccount() {
+            if(confirm("Are you sure you want to delete your Broker status and My Page?")) {
+                isBroker = false;
+                localStorage.removeItem('broka_is_broker');
+                localStorage.removeItem('broka_spec');
+                localStorage.removeItem('broka_addr');
+                updateUIState();
+                alert("Broker account deleted successfully.");
+            }
+        }
+
+        function renderChatMessages() {
+            const box = document.getElementById('chat-messages-box');
+            if(!box) return;
+            box.innerHTML = '';
+            if(chatMessages.length === 0) {
+                box.innerHTML = '<div class="text-gray-500 text-xs text-center">No messages yet. Start a conversation!</div>';
+                return;
+            }
+            chatMessages.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = msg.sender === 'me' 
+                    ? "bg-accent/10 border border-accent/20 p-3 rounded-xl text-xs max-w-xs text-accent ml-auto"
+                    : "bg-gray-900 p-3 rounded-xl text-xs max-w-xs text-gray-300";
+                div.innerText = msg.text;
+                box.appendChild(div);
+            });
+            box.scrollTop = box.scrollHeight;
         }
 
         function sendChatMessage(event) {
@@ -507,13 +656,17 @@
             const input = document.getElementById('chat-input-msg');
             if(!input.value.trim()) return;
 
-            const box = document.getElementById('chat-messages-box');
-            const msgDiv = document.createElement('div');
-            msgDiv.className = "bg-accent/10 border border-accent/20 p-3 rounded-xl text-xs max-w-xs text-accent ml-auto";
-            msgDiv.innerText = input.value;
-            box.appendChild(msgDiv);
+            chatMessages.push({ sender: 'me', text: input.value });
+            localStorage.setItem('broka_chats', JSON.stringify(chatMessages));
             input.value = "";
-            box.scrollTop = box.scrollHeight;
+            renderChatMessages();
+        }
+
+        function handlePostAd(event) {
+            event.preventDefault();
+            alert("Your item has been successfully published to Broka.lk Marketplace!");
+            event.target.reset();
+            switchTab('home');
         }
     </script>
 </body>
